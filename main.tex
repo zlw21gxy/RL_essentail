@@ -1,0 +1,1120 @@
+% !TEX program = xelatex
+
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+
+% \documentclass[
+% ]{article}
+% \usepackage[UTF8, heading = false, scheme = plain]{ctex}
+\documentclass{ctexart}
+% \usepackage[UTF8]{ctex}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={209.9mm,297.0mm},
+ left=20mm,
+ right=20mm,
+ top=25mm,
+ bottom=25mm,
+ }
+
+ 
+ 
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+% \makeatletter
+% \@ifundefined{KOMAClassName}{% if non-KOMA class
+%   \IfFileExists{parskip.sty}{%
+%     \usepackage{parskip}
+%   }{% else
+%     \setlength{\parindent}{0pt}
+%     \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+% }{% if KOMA class
+%   \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+
+\author{谷心洋}
+\date{20210312}
+
+\begin{document}
+
+\hypertarget{header-n16663}{%
+\section{RL Essential}\label{header-n16663}}
+
+\hypertarget{header-n16665}{%
+\subsection{总体框架}\label{header-n16665}}
+
+\begin{figure}
+\centering
+\includegraphics{./images/image-20210228151845844.png}
+\caption{}
+\end{figure}
+
+\hypertarget{header-n16667}{%
+\subsubsection{Actor-Critic}\label{header-n16667}}
+
+\includegraphics[width=0.32\textwidth]{./images/image-20210301123326314.png}
+\includegraphics[width=0.32\textwidth]{./images/image-20210302162310049.png}
+\includegraphics[width=0.32\textwidth]{./images/image-20210302162529861.png}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  使用什么方式计算critic
+% \end{enumerate}
+
+    \begin{itemize}
+    \item
+      MC
+    \item
+      TD(0)
+    \item
+      TD(n)
+    \item
+      \(\text{TD}(\lambda)\)
+    \end{itemize}
+
+% \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  使用什么方式计算actor
+% \end{enumerate}
+
+    \begin{itemize}
+    \item
+      Greedy
+    \item
+      Policy gradient
+    
+      \begin{itemize}
+      \item
+        on-policy
+      \item
+        off-policy
+      \item
+        natural gradient
+      \end{itemize}
+    \end{itemize}
+
+% \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Behavior policy 与 target policy 匹配吗
+
+
+    \begin{itemize}
+    \item
+      on-policy
+    \item
+      off-policy
+    \item
+      Importance sampling
+    \item
+      offline
+    \end{itemize}
+\end{enumerate}
+
+
+\hypertarget{header-n16711}{%
+\subsection{基本概念}\label{header-n16711}}
+
+\hypertarget{header-n16712}{%
+\subsubsection{Defination}\label{header-n16712}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+    \item
+      Policy
+% \end{enumerate}
+
+    \begin{equation}
+    a_t \sim \pi_{\theta}(\cdot | s_t)
+    \end{equation}
+% \begin{enumerate}
+% \def\labelenumi{\arabic{enumi}.}
+    \item
+    reward and return
+% \end{enumerate}
+    \begin{equation}
+    R(\tau) = \sum_{t=0}^{\infty} \gamma^t r_t
+    \end{equation}
+
+% \begin{enumerate}
+% \def\labelenumi{\arabic{enumi}.}
+    \item
+    RL problem
+    \begin{equation}
+        P(\tau|\pi) = \rho_0 (s_0) \prod_{t=0}^{T-1} P(s_{t+1}|s_t, a_t) \pi(a_t|s_t)
+    \end{equation}
+    \begin{align}
+    \begin{split}
+        J(\pi) &= \int_{\tau} P(\tau|\pi) R(\tau) 
+        \\ &= E_{\tau\sim \pi}[{R(\tau)}]
+    \end{split}
+    \end{align}
+
+\end{enumerate}
+
+
+
+找到一个最佳 的policy使得累计reward最大化
+
+\begin{equation}
+    \pi^* = \arg \max_{\pi} J(\pi)
+\end{equation}
+
+\hypertarget{header-n16728}{%
+\subsubsection{Value Function}\label{header-n16728}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Value function
+
+\begin{equation}
+    V^{\pi}(s) = E_{\tau \sim \pi}[{R(\tau)\left| s_0 = s\right.}] \label{V}
+\end{equation}
+    
+\begin{equation}
+    Q^{\pi}(s,a) = E_{\tau \sim \pi}[{R(\tau)\left| s_0 = s, a_0 = a\right.}] \label{Q}
+\end{equation}
+
+\item
+  one-step expand for value function
+
+
+\begin{figure}
+\centering
+  \begin{subfigure}[b]{0.7\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{./images/image-20210228162805882.png}
+    \caption{$V(s)$单步展开}
+    \label{fig:f1}
+  \end{subfigure}
+  \newline
+  \begin{subfigure}[b]{0.7\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{./images/image-20210228162818519.png}
+    \caption{$Q(s, a)$单步展开}
+    \label{fig:f2}
+  \end{subfigure}
+
+\end{figure}
+
+\begin{equation}
+V^{\pi}(s) = E_{a \sim \pi}[Q^{\pi}(s, a)] \label{VQ}
+\end{equation}
+
+\begin{equation}
+Q^{\pi}(s, a) = r(s, a) + \gamma E_{s' \sim P}[V^{\pi}(s')]  \label{QV}
+\end{equation}
+\item
+  Bellman equation (two-step expand for value function)
+  \begin{equation}
+    V^{\pi}(s) = E_{a \sim \pi s'\sim P}{[r(s,a) + \gamma V^{\pi}(s')]}
+  \end{equation}
+  \begin{align}
+    Q^{\pi}(s,a) &= E_{s'\sim P}[{r(s,a) + \gamma E_{a'\sim \pi}[{Q^{\pi}(s',a')}}]
+    \\&= r(s,a) + \gamma E_{a'\sim \pi s' \sim P}[{Q^{\pi}(s',a')}]
+  \end{align}
+
+\end{enumerate}
+
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.31\textwidth}
+         \centering
+         \includegraphics{./images/image-20210228162417112.png}
+         \caption{$V(s)$两步展开}
+         \label{fig:one step v}
+     \end{subfigure}
+    %  \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics{./images/image-20210228162311101.png}
+         \caption{$Q(s, a)$两步展开}
+         \label{fig:one step q}
+     \end{subfigure}
+
+\end{figure}
+
+
+
+
+\hypertarget{header-n16750}{%
+\subsubsection{Optimal Value Function}\label{header-n16750}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Optimal value function
+
+\begin{equation}
+V^*(s) = \max_{\pi} V_{\pi}(s) = \max_{\pi} E_{\tau \sim \pi}[{R(\tau)\left| s_0 = s\right.}]
+\end{equation}
+
+\begin{equation}
+Q^*(s,a) = \max_{\pi} Q_{\pi}(s, a) = \max_{\pi} E_{\tau \sim \pi}[{R(\tau)\left| s_0 = s, a_0 = a\right.}]
+\end{equation}
+
+\item
+  one-step expand for optimal value function
+
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.31\textwidth}
+         \centering
+         \includegraphics{./images/image-20210228173204664.png}
+         \caption{$V^*(s)$单步展开}
+         \label{fig:one step v}
+     \end{subfigure}
+    %  \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics{./images/image-20210228173216773.png}
+         \caption{$Q^*(s, a)$单步展开}
+         \label{fig:one step v* q*}
+     \end{subfigure}
+
+\end{figure}
+
+\begin{equation}
+    V^*(s) = \max_{a} Q^*(s, a)
+\end{equation}
+
+\begin{equation}
+    Q^*(s, a) = r(s, a) + E_{s' \sim P}[V^*(s')]
+\end{equation}
+
+\item
+  Bellman equation for optimal value function( (two-step expand)
+\end{enumerate}
+
+
+
+\includegraphics[width=0.7 \textwidth]{./images/image-20210228172833240.png}
+
+\begin{equation}
+    V^*(s) = \max_a E_{s'\sim P}[{r(s,a) + \gamma V^*(s')}]
+\end{equation}
+
+\begin{equation}
+    Q^*(s,a) = E_{s'\sim P}[{r(s,a) + \gamma \max_{a'} Q^*(s',a')}]  \label{opt_q}
+\end{equation}
+\hypertarget{header-n16769}{%
+\subsubsection{Advantage}\label{header-n16769}}
+
+Advantage在 policy gradient
+的算法中经常使用，此处给出定义，直觉上该值表征了在状态 \(s_t\)
+选择特定动作的收益相对于平均收益的优势，另外可以证明 \textbf{TD-error 是
+advantage的无偏估计}
+\begin{align}
+    A_t &= R(\tau|s,a) - \mathsf{E}_{a \sim \pi}[R(\tau |s,a)]
+    \\
+    &= Q(s_t,a_t) - V(s_t) 
+    \\
+    &= R(\tau) - V(s_t)  \label{advantage} 
+\end{align}
+
+这个性质可以极大的拓展advantage的估计方法，使之可以嫁接到几乎任意值函数的估计过程中，
+同样的也就存在$A^{(1)}, A^{(2)}..., A^{(n)}$以及$A^{(\lambda)}$,advantage的估计几乎总是
+和值函数的估计紧密相连的。
+
+\begin{equation}
+\begin{split}
+    \mathsf{E}_{\pi}[\delta^{\pi} | s_t, a_t] &= \mathsf{E}_{\pi}[r_t + \gamma V(s_{t+1}) | s_t, a_t] - V(s_t)
+    \\
+    &= Q(s_t, a_t) - V(s_t) 
+    \\
+    &= A(s_t, a_t)
+\end{split}
+\end{equation}
+
+
+
+\hypertarget{header-n16777}{%
+\subsection{Implementing a critic}\label{header-n16777}}     % predict
+
+对一个未知的MDP过程，策略已知的情况下如何评价策略的优劣就是critic要解决的问题，从最朴素的
+逻辑看来，就是将该策略在环境中跑上很多次，甚至无限次，将其总收益的均值作为真实回报的估计值，
+这样的样本利用率无疑是很低的，需要采样很多次才能收敛于一个稳定的估计，但可以证明这种朴素的
+算法得到的估计是无偏的，其实这正是大名鼎鼎的蒙特卡洛算法。
+
+另一种想法是没必要每次都跑到最后，如果已经遇到了之前碰到的情况就没必要再继续实验了，举例来说，
+馋糖-1，偷吃糖+5，被妈妈打-10，考虑策略分布不变的前提下，如果开始馋糖，那不继续步进下去也可以计算
+最后的收益，换言之只需要在环境中采样一段数据的回报再加上记住的回报就是最终估计的总回报，这便是
+TD算法，和动态规划不同的无非是通过采样进行。
+
+
+\hypertarget{header-n16779}{%
+\subsubsection{Monte-Carlo}\label{header-n16779}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  On-policy
+
+\begin{equation}
+    V_{\pi} = E_{\pi}[r_{t+1} + \gamma r_{t+2} + … + \gamma^{T-1}r_T |S_t = s]
+\end{equation}
+
+使用待评估策略生成的数据，取其平均作为对策略回报的估计
+
+\item
+  Off-policy Prediction via Importance Sampling
+\end{enumerate}
+
+\begin{quote}
+要区分on-policy和off-policy就首先要区分两类策略，一类是用来生成数据的叫做 behavior policy,这个策略可以是千奇百怪的，甚至是完全随机的，而另一类叫 target policy,
+这是我们心心念念要去学习的策略，而如果这两种策略不是一致的，则变成了off-policy，
+让actor根据别人做的动作去学习，是需要矫正的，这也就是 Importance Sampling 的作用。
+根据另一个分布中的采样数据来估计当前分布的期望。
+\end{quote}
+
+\begin{align}
+	\mathsf{E}_{x \sim p(x)}[f(x)] &= \int p(x)f(x) dx
+	\\ &= \int \frac{p(x)}{q(x)} q(x) f(x) dx
+	\\ &=\mathsf{E}_{x \sim q(x)}[\frac{p(x)}{q(x)} f(x)] \label{IS}
+\end{align}
+
+\begin{quote}
+trajectory的分布也会随着target policy与behavior policy的不同产生差异，
+importance sampling ratio 是一个重要指标，来刻画两个tarjectory分布的比值，
+有助于化简之后的公式，在论文中也经常出现
+\end{quote}
+
+
+\begin{align}
+	\rho_{0:T} &= \frac{P(\tau|\pi_{target})}{P(\tau|\pi_{behavior}) }
+	\\ &= \frac{\rho_0 (s_0) \prod_{t=0}^{T-1} P(s_{t+1} | s_t, a_t) \pi_{target}(a_t | s_t)}{\rho_0 (s_0) \prod_{t=0}^{T-1} P(s_{t+1} | s_t, a_t) \pi_{behavior}(a_t | s_t)}
+	\\ &= \prod^{T-1}_{t=0} \frac{\pi_{target}(a_t|s_t)}{\pi_{behavior}(a_t|s_t)}  \label{pi_frac}
+\end{align}
+
+\begin{quote}
+we wish to estimate the expected returns (values) under the target
+policy, but all we have are returns \(G_t\) due to the behavior policy.
+我们应该估计的是使用target policy做采样时的回报期望，但是只有使用behavior policy
+采样后得到的\(G_t\) :
+\end{quote}
+
+\begin{equation}
+    \mathsf{E}[G_t|s_0 = s_t] = v_b(s_t)
+\end{equation}
+
+\begin{quote}
+此时如果想要评估target policy产生的 \(v_\pi(s_t)\) 就需要使用Importance
+Sampling（\(\ref{IS}\)）此时采样的数据分布是由 \(\pi_{behavior}\)
+产生的，而期望评估的是 \(\pi_{target}\) 对应的值函数
+\end{quote}
+
+\begin{equation}
+    \mathsf{E}[\rho_{t:T-1}G_T|s_0 = s_t] = v_\pi(s_t) \label{IS_V}
+\end{equation}
+
+\hypertarget{header-n16802}{%
+\subsubsection{Temporal-Difference}\label{header-n16802}}
+
+\hypertarget{header-n16803}{%
+\paragraph{TD(0)}\label{header-n16803}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  TD target
+
+\begin{equation}
+    G_{t:t+1} = r_{t} + \gamma V(S_{t+1})
+\end{equation}
+
+\item
+  TD error
+
+  
+\begin{equation}
+    \delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)
+\end{equation}
+
+\item
+  Connection between MC
+\end{enumerate}
+
+MC error可以被视为一系列TD error的累加，也就是MC方法在更新价值函数时，相当于考虑了每一步的TD error，而TD(0)只考虑当下的error从而更新价值函数，这就
+涉及到了credit assignment problem，当获得reward信号后，如何将有关联的值函数更新，例如考试没通过，到底是和昨晚上通宵复习临阵磨枪相关呢，还是和平时划水
+相关呢，TD(0)只会更新当下的值函数，v(通宵学习) = -100 + v(考试结束) 显然有些荒谬，换言之TD(0)对信息的传播是缓慢的，拿到reward信号后，当下的state的值函数
+可以得到更新，但是更早的状态却没有更新。下图是一个MDP过程，从左上角出发，agent做随机动作直到右下角可以得到reward，可以看出各个不同方法的区别。
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.7\textwidth]{./images/TD0_MDP.png}
+\end{figure}
+
+\begin{align}
+\begin{split}
+  G_{t}-V\left(S_{t}\right) &=R_{t+1}+\gamma G_{t+1}-V\left(S_{t}\right)+\gamma V\left(S_{t+1}\right)-\gamma V\left(S_{t+1}\right) \\
+  &=\delta_{t}+\gamma\left(G_{t+1}-V\left(S_{t+1}\right)\right) \\
+  &=\delta_{t}+\gamma \delta_{t+1}+\gamma^{2}\left(G_{t+2}-V\left(S_{t+2}\right)\right) \\
+  &=\delta_{t}+\gamma \delta_{t+1}+\gamma^{2} \delta_{t+2}+\cdots+\gamma^{T-t-1} \delta_{T-1}+\gamma^{T-t}\left(G_{T}-V\left(S_{T}\right)\right) \\
+  &=\delta_{t}+\gamma \delta_{t+1}+\gamma^{2} \delta_{t+2}+\cdots+\gamma^{T-t-1} \delta_{T-1}+\gamma^{T-t}(0-0) \\
+  &=\sum_{k=t}^{T-1} \gamma^{k-t} \delta_{k}
+\end{split}
+\end{align}
+
+
+
+\hypertarget{header-n16812}{%
+\paragraph{TD(n)}\label{header-n16812}}
+
+
+\begin{figure}
+\centering
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{./images/image-20210228183633223.png}
+    \caption{$TD(n)$}
+    \label{fig:f1}
+  \end{subfigure}
+  %
+  \hspace{1cm}
+  \begin{subfigure}{0.4\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{./images/image-20210301111036817.png}
+    \caption{$ TD(\lambda)$}
+    \label{fig:f2}
+  \end{subfigure}
+\end{figure}
+
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  TD target
+\begin{equation}
+    G_{t:t+n} = r_{t} + \gamma r_{t+1} + ... + \gamma^{n-1}r_{t+n-1}+\gamma^nV(s_{t+n})
+\end{equation}
+
+\item
+  TD error
+\end{enumerate}
+
+\begin{equation}
+    \delta = G_{t:t+n} - V(s_t)
+\end{equation}
+
+\hypertarget{header-n16823}{%
+\paragraph{\texorpdfstring{\(\mathsf{TD}(\lambda)\)}{\textbackslash mathsf\{TD\}(\textbackslash lambda)}}\label{header-n16823}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  $\lambda$ return
+
+  MC和TD(0)代表了两个极端, 可以在这两者之间做一个类似差值的工作，从而平衡两种方法。
+
+  \begin{equation}
+    G_{t} = r_t + G_{t+1}
+  \end{equation}
+  \begin{equation}
+    G_{t} = r_t + V(S_{t+1})
+  \end{equation}
+  \begin{equation}
+    G^{\lambda}_{t: T} = r_t + \gamma \left[(1-\lambda) V(S_{t+1})+\lambda G^{\lambda}_{t+1: T}\right]
+  \end{equation}
+
+\item
+  TD target
+\begin{align}
+  G_{t}^{\lambda} &= (1-\lambda) \sum_{n=1}^{\infty} \lambda^{n-1} G_{t: t+n} 
+  \\&=(1-\lambda) \sum_{n=1}^{T-t-1} \lambda^{n-1} G_{t: t+n}+\lambda^{T-t-1} G_{t} \label{TD_lambda}
+\end{align}
+
+
+\item
+  TD error
+\end{enumerate}
+
+\begin{equation}
+    \delta^{\lambda} = G^{\lambda} - V(s_t)
+\end{equation}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth]{./images/image-20210301111203234.png}
+\caption{Eligibility Traces}
+\end{figure}
+
+从公式（\ref{TD_lambda}）可以看出$TD(\lambda$与MC，TD的联系，当$\lambda = 1$时
+$G_t^{\lambda}$退化为$G_t$也就是蒙特卡洛，而当$\lambda = 0$时$G_t^{\lambda} = G_{t:t+1}$
+也就是$TD(0)$ 一方面是无偏估计但是高方差，一方面是较低的方差但是估计有偏，
+所谓的 bias-variance balance problem 会经常出现， 强化学习中有三对很重要的
+权衡: (1) bias-variance (2) exploration-exploitation (3) on policy - off policy 
+往往交接处就是创新的涌现点，这三方面都有很多精彩的工作试图鱼与熊掌兼得，或是更好的
+权衡两者找到平衡点。
+
+$TD(\lambda)$相当于对不同步长进行了加权，这就使得更新只能在环境运行结束后进行，而可以实时
+更新价值函数恰恰是TD方法最大的优点，为了能在环境运行时同步的计算$TD(\lambda)$需要引进
+"backward view using eligibility traces" Backward指的是，考虑过去价值对当前价值的影响。
+简而言之维持了一个  eligibility traces weight 和一个 long term weight 将梯度不断的累加到
+eligibility traces weight中但同时以\(\gamma \lambda\)的速率衰减，正如人会逐步遗忘过去的经验，
+更新$v_{\omega}(s)$时则同时考虑两者。
+
+\begin{equation}
+\begin{array}{l}
+  \mathbf{z}_{-1} \doteq \mathbf{0} \\
+  \mathbf{z}_{t} \doteq \gamma \lambda \mathbf{z}_{t-1}+\nabla \hat{v}\left(S_{t}, \mathbf{w}_{t}\right), \quad 0 \leq t \leq T
+\end{array}
+\end{equation}
+单步的TD-error为 $\delta_{t} \doteq R_{t+1}+\gamma \hat{v}\left(S_{t+1}, \mathbf{w}_{t}\right)-\hat{v}\left(S_{t}, \mathbf{w}_{t}\right)$
+因此更新价值函数的公式即为:
+\begin{equation}
+  \mathbf{w}_{t+1} \doteq \mathbf{w}_{t}+\alpha \delta_{t} \mathbf{z}_{t}  
+\end{equation}
+对比一般的价值函数更新公式：$\mathbf{w}_{t+1} \doteq \mathbf{w}_{t}+\alpha \delta_{t} \nabla \hat{v}\left(S_{t}, \mathbf{w}_{t}\right)$
+最大的差异在于$TD(\lambda)$ 相当于对之前各个时刻的梯度做了加权，后者只考虑了此刻的梯度。
+\hypertarget{header-n16831}{%
+\paragraph{GAE}\label{header-n16831}}
+
+\begin{equation}
+  \begin{array}{l}
+    \hat{A}_{t}^{(1)}:=\delta_{t}^{V}=-V\left(s_{t}\right)+r_{t}+\gamma V\left(s_{t+1}\right) \\
+    \hat{A}_{t}^{(2)}:=\delta_{t}^{V}+\gamma \delta_{t+1}^{V}=-V\left(s_{t}\right)+r_{t}+\gamma r_{t+1}+\gamma^{2} V\left(s_{t+2}\right) \\
+    \hat{A}_{t}^{(3)}:=\delta_{t}^{V}+\gamma \delta_{t+1}^{V}+\gamma^{2} \delta_{t+2}^{V}=-V\left(s_{t}\right)+r_{t}+\gamma r_{t+1}+\gamma^{2} r_{t+2}+\gamma^{3} V\left(s_{t+3}\right) \\
+    \hat{A}_{t}^{(k)}:=\sum_{l=0}^{k-1} \gamma^{l} \delta_{t+l}^{V}=-V\left(s_{t}\right)+r_{t}+\gamma r_{t+1}+\cdots+\gamma^{k-1} r_{t+k-1}+\gamma^{k} V\left(s_{t+k}\right)
+  \end{array}
+\end{equation}
+
+
+仿照 \(TD(\lambda)\) 形式，\(GAE(\lambda, \gamma)\) 可以定义为一个对
+advantage 的 exponentially-weighted-average,从而降低估计的方差。
+
+\begin{align}
+\begin{split}
+\hat{A}_{t}^{\operatorname{GAE}(\gamma, \lambda)} &:=(1-\lambda)\left(\hat{A}_{t}^{(1)}+\lambda \hat{A}_{t}^{(2)}+\lambda^{2} \hat{A}_{t}^{(3)}+\ldots\right) \\
+&=(1-\lambda)\left(\delta_{t}^{V}+\lambda\left(\delta_{t}^{V}+\gamma \delta_{t+1}^{V}\right)+\lambda^{2}\left(\delta_{t}^{V}+\gamma \delta_{t+1}^{V}+\gamma^{2} \delta_{t+2}^{V}\right)+\ldots\right) \\
+&=(1-\lambda)\left(\delta_{t}^{V}\left(1+\lambda+\lambda^{2}+\ldots\right)+\gamma
+\delta_{t+1}^{V}\left(\lambda+\lambda^{2}+\lambda^{3}+\ldots\right)\right.\\
+&\left.\quad+\gamma^{2} \delta_{t+2}^{V}\left(\lambda^{2}+\lambda^{3}+\lambda^{4}+\ldots\right)+\ldots\right) \\
+&=(1-\lambda)\left(\delta_{t}^{V}\left(\frac{1}{1-\lambda}\right)+\gamma \delta_{t+1}^{V}\left(\frac{\lambda}{1-\lambda}\right)+\gamma^{2} \delta_{t+2}^{V}\left(\frac{\lambda^{2}}{1-\lambda}\right)+\ldots\right) \\
+&=\sum_{l=0}^{\infty}(\gamma \lambda)^{l} \delta_{t+l}^{V}
+\end{split}
+\end{align}
+
+可以发现在 \(\lambda=0\) 时，退化为TD(0)，\(\lambda=1\) 时退化为蒙特卡洛
+
+\begin{align}
+\operatorname{GAE}(\gamma, 0): & \hat{A}_{t}:=\delta_{t} \quad=r_{t}+\gamma V\left(s_{t+1}\right)-V\left(s_{t}\right) \\
+\operatorname{GAE}(\gamma, 1): & \hat{A}_{t}:=\sum_{l=0}^{\infty} \gamma^{l} \delta_{t+l}=\sum_{l=0}^{\infty} \gamma^{l} r_{t+l}-V\left(s_{t}\right)
+\end{align}
+
+GAE 与 \(TD(\lambda)\) 的关系是清晰的，GAE就是
+\(\delta^{\lambda} = G^{\lambda}_t - V(s_t)\)
+的另一种计算形式，但是采用GAE更适用于对advantage的估计:
+
+% \[R_{t}^{\lambda}:=(1-\lambda) \sum_{i=t}^{T-1} \lambda^{i-t} R_{t: i+1}+\lambda^{T-t} R_{t: T+1}\]
+
+% \[\delta_{V}^{\lambda}\left(s_{t}, s_{t+1} ; \omega\right):=R_{t}^{\lambda}-\widehat{V}\left(s_{t} ; \omega\right)\]
+
+% \begin{align}
+% A_{t: t+n} &:=\delta_{V}\left(s_{t}, s_{t+1} ; \omega\right)+\gamma \delta_{V}\left(s_{t+1}, s_{t+2} ; \omega\right)+\ldots+\gamma^{n-1} \delta_{V}\left(s_{t+n-1}, s_{t+n} ; \omega\right) \\
+% &=R_{t: t+n}-\widehat{V}\left(s_{t} ; \omega\right), \quad 0 \leq t \leq T-n \\
+% A_{t: T+1} &:=R_{t: T+1}-\widehat{V}\left(s_{t} ; \omega\right)
+% \end{align}
+
+% \[\widehat{A}^{\lambda}\left(s_{t}, a_{t} ; \omega\right):=(1-\lambda) \sum_{i=t}^{T-1} \lambda^{i-t} A_{t: i+1}+\lambda^{T-t} A_{t: T+1}\]
+
+\begin{align}
+\widehat{A}^{\lambda}\left(s_{t}, a_{t} ; \omega\right) &:=(1-\lambda) \sum_{i=t}^{T-1} \lambda^{i-t}\left(R_{t: i+1}-\widehat{V}\left(s_{t} ; \omega\right)\right)+\lambda^{T-t}\left(R_{t: T+1}-\widehat{V}\left(s_{t} ; \omega\right)\right) \\
+&=(1-\lambda) \sum_{i=t}^{T-1} \lambda^{i-t} R_{t: i+1}+\lambda^{T-t} R_{t: T+1}-\widehat{V}\left(s_{t} ; \omega\right) \\
+&=R_{t}^{\lambda}-\widehat{V}\left(s_{t} ; \omega\right)
+\\&=\delta_{V}^{\lambda}\left(s_{t}, s_{t+1} ; \omega\right)
+\end{align}
+
+\hypertarget{header-n16845}{%
+\subsection{Implementing a actor}\label{header-n16845}}
+
+
+策略提升无非有两种方式，一种是根据现有的值函数贪婪的选择动作，另一种是直接对强化学习的优化目标进行策略提升，但其实几乎所有工程实践中使用的方式都可以放入actor-critic的框架，greedy策略可以视为一种特殊的actor，而policy
+gradient策略无非是使用了更为复杂的actor
+
+\hypertarget{header-n16852}{%
+\paragraph{Greedy}\label{header-n16852}}
+
+\begin{align}
+  \pi(a|s)&=\underset{a \in \mathcal{A}}{\operatorname{argmax}} \{r(s,a)+\mathcal{P}(s'|s, a)V\left(s^{\prime}\right)\} \\
+  &=\underset{a \in \mathcal{A}}{\operatorname{argmax}} Q(s, a)
+\end{align}
+
+如果已知 \(V(s_t)\)
+则可以贪婪的选择下一时刻的动作，但此时要求MDP过程的状态转移函数为已知条件，因此在实际使用时几乎都会去计算
+\(Q(s_t, a_t)\) 或 \(Q^*(s_t, a_t)\) 从而很方便的得到最优化动作,整体学习过程就是值函数评估和策略提升的迭代过程:
+\begin{equation*}
+  \pi_{0} \stackrel{\mathrm{E}}{\longrightarrow} q_{\pi_{0}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{1} \stackrel{\mathrm{E}}{\longrightarrow} q_{\pi_{1}} \stackrel{\mathrm{I}}{\longrightarrow} \pi_{2} \stackrel{\mathrm{E}}{\longrightarrow} \cdots \stackrel{\mathrm{I}}{\longrightarrow} \pi_{*} \stackrel{\mathrm{E}}{\longrightarrow} q_{*}
+\end{equation*}
+
+值得注意此时的算法都是以 on-policy
+的形式进行的，因为评估的值函数必须要对应生成数据的policy也就是target
+policy与behavior
+policy是一致的，如果希望使用离线数据，则必须进行修正。有没有一种方式可以使用离线数据但又不需要IS呢？注意到最优值函数的
+bellam equation (\(\ref{opt_q}\))
+这里排除了对策略的依赖，因为每次更新时都使用了当前最佳策略生成的动作，因此能以off-policy的方式进行学习并且不需要使用IS进行矫正,
+换言之只要学习到了$Q^*(s, a)$就可以还原出最优化策略和动作，如下：
+
+\begin{equation}
+  \pi(a|s)=\underset{a \in \mathcal{A}}{\operatorname{argmax}} Q^*(s, a)  
+\end{equation}  
+
+\(\epsilon-\text{greedy}\)
+对所有动作都赋予一个非零概率，再从其中采样，有 \(\epsilon\)
+对概率使用随机动作，有 \(1 - \epsilon\) 的概率使用
+\(a^* = \text{argmax}_{a' \in \mathcal{A}}(Q(s,a'))\)
+换言之以一定的概率使用随机动作，以此来增强探索。
+
+\begin{equation}
+  \pi(a \mid s_{t}) \leftarrow\left\{\begin{array}{ll}
+    1-\varepsilon+\varepsilon /\left|\mathcal{A}\right| & \text { if } a=\text{argmax}_{a' \in \mathcal{A}}(Q(s,a')) \\
+    \varepsilon /\left|\mathcal{A}\right| & \text {otherwise}
+    \end{array}\right.
+\end{equation}
+
+
+\paragraph{Boltzmann distribution}
+\begin{equation}
+  \mathsf{Pr}\{A_t = a\} = \frac{e^{Q_{t}(a) / \tau}}{\sum_{b=1}^{n} e^{Q_{t}(b) / \tau}}  
+\end{equation}
+$\epsilon-greedy$策略随机的选择动作但这也意味着对于好的动作和差的动作，被选择的概率都相同，一种改进是对不同动作
+赋予不同的概率，再从这个分布中进行采样。$\tau$是控制动作离散程度的超参数，物理含义是温度，$\tau$越大则越接近于均匀分布，
+反之则接近于值函数的分布，当 $\tau \rightarrow 0$ 时，退化为greedy策略。
+\hypertarget{header-n16862}{%
+\paragraph{Policy-gradient on-policy}\label{header-n16862}}
+另一种思路是用一种策略去直接的最大化回报，而非隐式的从值函数中还原出策略，回忆强化学习的根本问题，最大化累计回报，以此作为优化目标
+直接的更新策略：
+\begin{align}  
+	J(\pi_{\theta}) &= \mathsf{E}_{\tau \sim \pi_{\theta}}[R(\tau)]  \label{obj}
+	\\ &= \mathsf{E}_{\tau \sim \pi_{\theta} \atop s \sim \mathcal{S}}[R(\tau)|s_0=s] 
+	\\ &= \mathsf{E}_{s \sim \mathcal{S}}[V^\pi(s)]   \label{obj_v}
+\end{align}
+有了优化目标，最朴素的做法就是求一下梯度，做梯度下降去优化该函数：
+\begin{equation}
+  \theta_{k+1} = \theta_k + \alpha \nabla_{\theta} J(\pi_{\theta})
+\end{equation}
+回忆tarjectory的分布,其中的环境状态转移函数是未知的:
+\begin{equation}
+  \pi(\tau|\theta) = P(\tau|\theta) = P_{\theta}(s1, a1,...,s_T,a_T)= \rho_0 (s_0) \prod_{t=0}^{T} P(s_{t+1}|s_t, a_t) \pi_{\theta}(a_t |s_t)  \label{trajectory}  
+\end{equation}
+先求一下累计回报的相对于策略的梯度看看是否奏效：
+\begin{align}
+\nabla J(\pi_{\theta}) &= \nabla_{\theta}\mathsf{E}_{\tau \sim \pi_{\theta}}[R(\tau)]
+	\\ & = \nabla_{\theta} \int_{\tau}P(\tau|\theta)R(\tau) & \text{Expand expectation}
+  \\ & = \int_{\tau}\nabla_{\theta} P(\tau|\theta)R(\tau) & \text{Bring gradient under integral}
+  \\ &= \int_{\tau} P(\tau|\theta) \nabla_{\theta} \log(P(\tau|\theta))R(\tau) & \text{Log-derivative trick}
+\\ &= \mathsf{E}_{\tau \sim \pi_{\theta}}[\nabla_{\theta} \log(P(\tau|\theta))R(\tau)] & \text{Return to expectation form} \label{obj1}
+\end{align}
+
+注意到（\(\ref{obj1}\)）中的\(\nabla_{\theta} \log(P(\tau|\theta))\)这是依赖于环境转移函数的（\(\ref{trajectory}\)）所以需要进一步处理，在求梯度的过程中不包含
+\(\theta\) 的项自然会是零，这就排除了对状态转移函数的需求:
+
+\begin{align} 
+  \nabla_{\theta} \log P(\tau | \theta) &= \nabla_{\theta} \log \rho_0 (s_0) + \sum_{t=0}^{T} \bigg( {\nabla_{\theta} \log P(s_{t+1}|s_t, a_t)}  + \nabla_{\theta} \log \pi_{\theta}(a_t |s_t)\bigg) \\
+  &= \sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t)  
+  \label{delta_tau}
+\end{align} 
+
+结合（\(\ref{obj1}\)）和（\ref{delta_tau}）可以得出核心公式:
+
+\begin{equation}
+  \nabla_{\theta} J(\pi_{\theta}) = \mathsf{E}_{\tau \sim \pi_{\theta}}[{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) R(\tau)}] \label{pg_obj}  
+\end{equation}
+
+可以进一步得到更为一般化的推导:
+
+\begin{align}
+	\nabla_{\theta} J(\pi_{\theta}) &= \mathsf{E}_{\tau \sim \pi_{\theta}}[{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) \sum^T_{t'=t}\gamma^{t-t'} r_t}]
+	\\ &= \mathsf{E}_{\tau \sim \pi_{\theta}}[{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) \mathsf{E}_{\tau \sim \pi_{\theta}} [R_t | s_t, a_t] }]
+	\\ &= \mathsf{E}_{\tau \sim \pi_{\theta}}[{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) Q(s_t, a_t)}]
+\end{align}
+
+此时就可以利用样本来估计该期望，agent使用\(\pi_{\theta}\)与环境进行交互，收集数据
+\(\mathcal{D} = \{\tau_i\}_{i=1,...,N}\) 去估计策略梯度，注意此时的
+target policy 和 behavior policy 需要是一致的，也就是 on-policy
+的方式训练，最直觉的例子就是使用蒙特卡洛去估计Q-function，换言之就是直接跑到环境结束为止，然后把在此期间收集到的reward加起来，取平均来估计\(Q(s_t, a_t)\)
+
+\begin{align}
+	\hat{g} &= \frac{1}{|\mathcal{D}|} \sum_{\tau \in \mathcal{D}} \sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) G_t
+	\\ &= \frac{1}{|\mathcal{D}|} \sum_{\tau \in \mathcal{D}} \sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) \sum^T_{k=t}\gamma^{k-t} r_t    &\text{reward to go}
+\end{align}
+
+此时的估计虽然是无偏的但是方差较大，为了减小方差可以考虑使用 advantage
+去替换 Q 此时的估计依旧是无偏的，先给出一个有用的等式:
+
+\begin{align}
+\mathsf{E}_{x \sim P_{\theta}}[{\nabla_{\theta} \log P_{\theta}(x)}] &= \int P_\theta(x){\nabla_{\theta} \log P_{\theta}(x)}dx
+\\&=\int {\nabla P_{\theta}(x)}dx
+\\&=\nabla \int { P_{\theta}(x)}dx
+\\&=0
+\end{align}
+
+进一步就可以得到如下等式:
+
+\begin{equation}
+  \mathsf{E}_{a_t \sim \pi_{\theta}}[{\nabla_{\theta} \log \pi_{\theta}(a_t|s_t) b(s_t)}] = 0  
+\end{equation}
+\begin{equation}
+  \nabla_{\theta} J(\pi_{\theta}) = \mathsf{E}_{\tau \sim \pi_{\theta}}\Bigg[ {\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) \left(\sum_{t'=t}^T R(s_{t'}, a_{t'}, s_{t'+1}) - b(s_t)\right)\Bigg]}  
+\end{equation}
+
+最常见的形式是 \(b(s_t) = V(s_t)\) 此时
+\(A(s_t) = Q(s_t, a_t) - V(s_t)\)
+参考(\(\ref{advantage}\))(\(\ref{adv_d}\))在常见的工程实践中，最常用的是将更新
+\(V(s_t)\) 时的 TD-error 作为 advantage
+的估计，在此基础上有一系列等价的形式去估计该策略梯度，也因此演化为几种不同的算法:
+
+\begin{align}
+	\nabla_{\theta} J(\theta)&=\mathsf{E}_{\pi_{\theta}}\left[\nabla_{\theta} \log \pi_{\theta}(A \mid S) G_{t}\right]   &\text{REINFORCE}
+	\\ &=\mathsf{E}_{\pi_{\theta}}\left[\nabla_{\theta} \log \pi_{\theta}(A \mid S) q_{w}(S, A)\right] & \text { Q Actor-Critic } 
+	\\ &=\mathsf{E}_{\pi_{\theta}}\left[\nabla_{\theta} \log \pi_{\theta}(A \mid S) A_{w}(S, A)\right] & \text { Advantage Actor-Critic }
+	\\& =\mathsf{E}_{\pi_{\theta}}\left[\nabla_{\theta} \log \pi_{\theta}(A \mid S) \delta_{t}\right]
+&\text{TD Actor-Critic}
+	\\&=\mathsf{E}_{\pi_{\theta}}\left[\delta_{t} e_{t}\right]  &\text{TD}(\lambda)\text{Actor-Critic}
+\end{align}
+
+\hypertarget{header-n16886}{%
+\paragraph{Policy-gradient off-policy}\label{header-n16886}}
+
+从最抽象的层次说，此问题相当于要使用 behavior policy 生成的样本序列
+\(\tau \sim \pi_{\theta ^ b}\) 去对 target policy 的优化目标
+\(J(\pi_\theta)\) 进行优化，对于 \(\pi_\theta\)
+的梯度是不受影响的，主要难点在于如何估计此时的 advantage，此时
+Importance Sampling
+就可以大展身手了，公式（\(\ref{IS_V}\)）已经给出了离线估计值函数的方法，而只要将其带入($\ref{pg_obj}$)即可:
+
+\begin{equation}
+  \nabla_{\theta} J(\pi_{\theta}) = \mathsf{E}_{\tau \sim \pi_{\theta}}[{\sum_{t=0}^{T}  \rho_{t:T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) R(\tau)}] \label{off_pg_obj}
+\end{equation}
+
+\begin{equation}
+  \nabla_{\theta} J(\pi_{\theta})= \mathsf{E}_{\tau \sim \pi_{\theta}}\bigg[{\sum_{t=0}^{T}  \prod^{T-1}_{t'=t} \frac{\pi_{target}(a_t'|s_t')}{\pi_{behavior}(a_t'|s_t')} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) R(\tau)}\bigg]
+\end{equation}
+
+
+但这是几乎无法计算的，因为在每一个时刻都需要对未来所有时刻进行累乘，转化一下思路将其变为对动作的期望，去掉对动作序列的依赖，并做一些近似使问题可解，注意到（\(\ref{obj_v}\)）PG的优化目标其实相当于在所有起始点都希望最终回报最大化，引入
+$d^b(s) = \lim_{t \rightarrow \infty} P(s_t=s|s_0,b)$ 以此来描述执行
+behavior-policy \(\pi_b\) 后state的分布:
+
+\[J(\theta) = \mathsf{E}_{s \sim d^b}[V^{\pi_{\theta}}(s)]\]
+
+回忆V与Q的关系（\(\ref{VQ}\)）可以进一步得到:
+\begin{align}
+  J(\theta) &= \mathsf{E}_{s \sim d^b}\big[ \mathsf{E}_{a \sim \pi_\theta} [Q^{\pi_\theta}(s, a)]    \big]  \\
+            &= \mathsf{E}_{s \sim d^{b}}\left[\sum_{a \in \mathcal{A}} Q^{\pi_\theta}(s, a) \pi_{\theta}(a \mid s)\right]
+\end{align}
+
+以此作为基础，对于无法计算的项进行忽略（收敛性证明见原始论文）就可以得到适用于Off-policy形式的梯度估计。其利用了IS处理不同策略采样数据分布不同的影响，虽然
+略显繁琐但却是一系列算法的理论基础，例如IMPALA的V-traces.
+% \[J(\theta)=\mathsf{E}_{s \sim d^{b}}\left[\sum_{a \in \mathcal{A}} Q^{\pi_\theta}(s, a) \pi_{\theta}(a \mid s)\right]\]
+
+\begin{align} 
+\label{pg_off}
+\begin{split}
+  \nabla_{\theta} J(\theta) &=\nabla_{\theta} \mathsf{E}_{s \sim d^b}\left[\sum_{a \in \mathcal{A}} Q^{\pi_\theta}(s, a)\pi_{\theta}(a \mid s)\right] \\
+  &=\mathsf{E}_{s \sim d^{b}}\left[\sum_{a \in \mathcal{A}}\left(Q^{\pi_\theta}(s, a) \nabla_{\theta} \pi_{\theta}(a \mid s)+\pi_{\theta}(a \mid s) \nabla_{\theta} Q^{\pi_\theta}(s, a)\right)\right] \\
+  & \approx \mathsf{E}_{s \sim d^{b}}\left[\sum_{a \in \mathcal{A}} Q^{\pi_\theta}(s, a) \nabla_{\theta} \pi_{\theta}(a \mid s)\right] \\
+  &=\mathsf{E}_{s \sim d^b}\left[\sum_{a \in \mathcal{A}} \pi_b(a \mid s) \frac{\pi_{\theta}(a \mid s)}{\pi_b(a \mid s)} Q^{\pi_\theta}(s, a) \frac{\nabla_{\theta} \pi_{\theta}(a \mid s)}{\pi_{\theta}(a \mid s)}\right] \\
+  &=\mathsf{E}_{s \sim d^b}\left[\mathsf{E}_{a \sim \pi_b(a|s)}\big[\frac{\pi_{\theta}(a \mid s)}{\pi_b(a \mid s)} Q^{\pi_\theta}(s, a) \nabla_{\theta} \ln \pi_{\theta}(a \mid s) \big]\right]\\
+  &=\mathsf{E}_{\tau \sim \pi_b}\left[\frac{\pi_{\theta}(a \mid s)}{\pi_b(a \mid s)} Q^{\pi_\theta}(s, a) \nabla_{\theta} \log \pi_{\theta}(a \mid s)\right]   
+\end{split}
+\end{align}
+
+有了公式(\(\ref{pg_off}\))后就可以采用任何喜欢的方式来构建算法了，例如使用\(\pi_b\)生成数据
+\(\mathcal{D}\) 后使用 TD(0) 更新critic:
+
+\begin{equation}
+  \delta_t = \frac{\pi_{\theta}(a_t \mid s_t)}{\pi_b(a_t \mid s_t)}[r_t + v(s_{t+1}) - v_{s_t}]  
+\end{equation}
+
+
+\begin{equation}
+  \nabla_{\theta} J(\theta) = \frac{1}{|\mathcal{D}|} \sum_{\tau \sim \mathcal{D}} \sum^T_{t=0} \left[ \delta_t \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t)\right]  
+\end{equation}
+
+
+\hypertarget{header-n289}{%
+\subsubsection{Entropy regularized framework}\label{header-n289}}
+
+\hypertarget{header-n291}{%
+\subsubsection{basic idea}\label{header-n291}}
+为方便参考，给出熵与KL的计算公式如下：
+\begin{align}
+    H(\pi(a|s)) &= \textsf{E}_{a \sim \pi(a|s)}[-\log(\pi(a|s))]\\
+    &= -\sum_a \pi(a|s)\log(\pi(a|s))
+\end{align}
+\begin{align}
+  D_{\mathrm{KL}}(P \| Q) 
+  &= \int_{-\infty}^{\infty} p(x) \log \left(\frac{p(x)}{q(x)}\right) dx \\
+  &= \sum_{x \in \mathcal{X}} P(x) \log \left(\frac{P(x)}{Q(x)}\right) 
+\end{align}
+\begin{align}
+  \mathrm{H}(X) &=\mathrm{E}\left[\mathrm{I}_{X}(x)\right] \\
+  &=\log (N)-D_{\mathrm{KL}}\left(p_{X}(x) \| P_{U}(X)\right)
+  \end{align}
+
+
+
+从更统一的框架看，定义当前策略与参考策略在某时刻的KL，如果想还原出原始的熵正则化，只需要取参考分布为均匀分布即可 $\bar \pi \sim U$.
+
+\begin{equation}
+  \mathrm{KL}_{t}=D_{\mathrm{KL}}\left[\pi\left(\cdot \mid s_{t}\right) \| \bar{\pi}\left(\cdot \mid s_{t}\right)\right]
+\end{equation}
+
+加入正则化项后的累计回报如下：
+\begin{equation}
+  \sum_{t=0}^{\infty} \gamma^{t}\left(r_{t}-\tau \mathrm{KL}_{t}\right)  
+\end{equation}
+
+从而可以定义值函数:
+\begin{equation}
+  V_{\pi}(s)=\mathbb{E}\left[\sum_{t=0}^{\infty} \gamma^{t}\left(r_{t}-\tau \mathrm{KL}_{t}\right) \mid s_{0}=s\right]  
+\end{equation}
+
+\begin{equation}
+  Q_{\pi}(s, a)=\mathbb{E}\left[r_{0}+\sum_{t=1}^{\infty} \gamma^{t}\left(r_{t}-\tau \mathrm{KL}_{t}\right) \mid s_{0}=s, a_{0}=a\right]  
+\end{equation}
+
+注意到Q function的$r_0$项并不包括KL penality，因为$a_0$是选择的确定性动作，因此Q与V的关系如下：
+\begin{equation}
+  V_{\pi}(s)=\mathbb{E}_{a \sim \pi}\left[Q_{\pi}(s, a)\right]-\tau \mathrm{KL}(s)  
+\end{equation}
+
+\hypertarget{header-n304}{%
+\subsubsection{Continuous action spaces}\label{header-n304}}
+
+\hypertarget{header-n305}{%
+\paragraph{Policy Function}\label{header-n305}}
+\begin{equation}
+    \pi^{*}=\arg \max _{\pi} \sum_{t} \mathbb{E}_{\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right) \sim \rho_{\pi}}\left[r\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)+\alpha \mathcal{H}\left(\pi\left(\cdot \mid \mathbf{s}_{t}\right)\right)\right]
+\end{equation}
+
+
+
+\begin{align}
+    \pi_{\text {new }} &=\arg \min _{\pi^{\prime} \in \Pi} D_{\mathrm{KL}}\left(\pi^{\prime}\left(. \mid s_{t}\right) \| \frac{\exp \left(\frac{1}{\alpha} Q^{\pi_{\mathrm{old}}}\left(s_{t}, .\right)\right)}{Z^{\pi_{\mathrm{old}}}\left(s_{t}\right)}\right) \\
+    &=\arg \min _{\pi^{\prime} \in \Pi} D_{\mathrm{KL}}\left(\pi^{\prime}\left(. \mid s_{t}\right) \| \exp \left(\frac{1}{\alpha} Q^{\pi_{\mathrm{old}}}\left(s_{t}, .\right)-\log Z^{\pi_{\mathrm{old}}}\left(s_{t}\right)\right)\right) \\
+    J_{\pi}(\theta) &= D_{\mathrm{KL}}\left(\pi_{\theta}\left(. \mid s_{t}\right) \| \exp \left(\frac{1}{\alpha} Q^{w}\left(s_{t}, .\right)-\log Z_{w}\left(s_{t}\right)\right)\right) \\
+    &=\mathbb{E}_{a_{t} \sim \pi}\left[-\log \left(\frac{\exp \left(\frac{1}{\alpha} Q^{w}\left(s_{t}, a_{t}\right)-\log Z_{w}\left(s_{t}\right)\right)}{\pi_{\theta}\left(a_{t} \mid s_{t}\right)}\right)\right] \\
+    &=\mathbb{E}_{a_{t} \sim \pi}\left[\log \pi_{\theta}\left(a_{t} \mid s_{t}\right)-\frac{1}{\alpha} Q^{w}\left(s_{t}, a_{t}\right)+\log Z_{w}\left(s_{t}\right)\right]
+\end{align}
+
+\begin{equation}
+    J_{\pi}(\theta) \propto \mathbb{E}_{a_{t} \sim \pi}\left[\alpha \log \pi_{\theta}\left(a_{t} \mid s_{t}\right)-Q^{w}\left(s_{t}, a_{t}\right) \right]
+\end{equation}
+
+
+\hypertarget{header-n308}{%
+\paragraph{Value Function}\label{header-n308}}
+\begin{equation}
+  V\left(\mathbf{s}_{t}\right)=\mathbb{E}_{\mathbf{a}_{t} \sim \pi}\left[Q\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)-\alpha \log \pi\left(\mathbf{a}_{t} \mid \mathbf{s}_{t}\right)\right]  
+\end{equation}
+\begin{equation}
+  J_{Q}(\theta)=\mathbb{E}_{\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right) \sim \mathcal{D}}\left[\frac{1}{2}\left(Q_{\theta}\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)-\left(r\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)+\gamma \mathbb{E}_{\mathbf{s}_{t+1} \sim p}\left[V_{\bar{\theta}}\left(\mathbf{s}_{t+1}\right)\right]\right)\right)^{2}\right]  
+\end{equation}
+\begin{equation}
+  J_{\pi}(\phi)=\mathbb{E}_{\mathbf{s}_{t} \sim \mathcal{D}}\left[\mathbb{E}_{\mathbf{a}_{t} \sim \pi_{\phi}}\left[\alpha \log \left(\pi_{\phi}\left(\mathbf{a}_{t} \mid \mathbf{s}_{t}\right)\right)-Q_{\theta}\left(\mathbf{s}_{t},\pi_{\phi} (\mathbf{a}_{t} \mid \mathbf{s}_{t}) \right) \right]\right]  
+\end{equation}
+\begin{equation}
+  \alpha_{t}^{*} =\arg \min _{\alpha_{t}} \mathbb{E}_{\mathbf{a}_{t} \sim \pi_{t}^{*}}\left[-\alpha_{t} \log \pi_{t}^{*}\left(\mathbf{a}_{t} \mid \mathbf{s}_{t} ; \alpha_{t}\right)-\alpha_{t} \overline{\mathcal{H}}\right]  
+\end{equation}
+\begin{equation}
+  J(\alpha) = \mathbb{E}_{\mathbf{a}_{t} \sim \pi_{t}}\left[-\alpha \log \pi_{t}\left(\mathbf{a}_{t} \mid \mathbf{s}_{t}\right)-\alpha \overline{\mathcal{H}}\right]  
+\end{equation}
+
+
+
+\hypertarget{header-n315}{%
+\subsubsection{Discrete action spaces}\label{header-n315}}
+\begin{equation}
+  V\left(s_{t}\right):=\pi\left(s_{t}\right)^{T}\left[Q\left(s_{t}\right)-\alpha \log \pi\left(s_{t}\right)\right]  
+\end{equation}
+
+\begin{equation}
+  J(\alpha)=\pi_{t}\left(s_{t}\right)^{T}\left[-\alpha\log \left(\pi_{t}\left(s_{t}\right)\right)-\alpha\bar{H}\right]  
+\end{equation}
+
+\begin{equation}
+  J_{\pi}(\phi)=E_{s_{t} \sim D}\left[\pi_{t}\left(s_{t}\right)^{T}\left[\alpha \log \pi_{\phi}\left(s_{t}\right)-Q_{\theta}\left(s_{t}\right)\right]\right]  
+\end{equation}
+
+
+\begin{align}
+Q^{\pi}(s, a) &=\underset{s^{\prime} \sim P \atop a^{\prime} \sim \pi}{\mathrm{E}}\left[R\left(s, a, s^{\prime}\right)+\gamma\left(Q^{\pi}\left(s^{\prime}, a^{\prime}\right)+\alpha H\left(\pi\left(\cdot \mid s^{\prime}\right)\right)\right)\right] \\
+&=\underset{s^{\prime} \sim P \atop a^{\prime} \sim \pi}{\mathrm{E}}\left[R\left(s, a, s^{\prime}\right)+\gamma\left(Q^{\pi}\left(s^{\prime}, a^{\prime}\right)+\alpha_{a^{\prime} \sim \pi\left(a^{\prime} \mid s^{\prime}\right)}\left[-\log \pi\left(a^{\prime} \mid s^{\prime}\right)\right]\right)\right] \\
+&=\underset{s^{\prime} \sim P \atop a^{\prime} \sim \pi}{\mathrm{E}}\left[R\left(s, a, s^{\prime}\right)+\gamma\left(Q^{\pi}\left(s^{\prime}, a^{\prime}\right)-\alpha \log \pi\left(a^{\prime} \mid s^{\prime}\right)\right)\right]  & \text{continuous action space} \\ 
+&=\underset{s^{\prime} \sim P \atop a^{\prime}}{\mathrm{E}}\left[R\left(s, a, s^{\prime}\right)+\gamma\left(Q^{\pi}\left(s^{\prime}, a^{\prime}\right)-\alpha \sum_{a^{\prime} \sim \pi\left(a^{\prime} \mid s^{\prime}\right)} \pi\left(a^{\prime} \mid s^{\prime}\right) \log \pi\left(a^{\prime} \mid s^{\prime}\right)\right)\right] \\
+&=\underset{s^{\prime} \sim P}{\mathrm{E}}\left[R\left(s, a, s^{\prime}\right)+\gamma \sum_{a^{\prime} \sim \pi\left(a^{\prime} \mid s^{\prime}\right)} \pi\left(a^{\prime} \mid s^{\prime}\right)\left(Q^{\pi}\left(s^{\prime}, a^{\prime}\right)-\alpha \log \pi\left(a^{\prime} \mid s^{\prime}\right)\right)\right] & \text{discrete action space}
+\end{align}
+
+\newpage
+\hypertarget{header-n16943}{%
+\section{Reference}\label{header-n16943}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  PG connection with Q-learning
+
+Equivalence Between Policy Gradients and Soft Q-Learning
+
+https://arxiv.org/pdf/1704.06440.pdf
+
+\item
+  GAE
+
+HIGH-DIMENSIONAL CONTINUOUS CONTROL USING GENERALIZED ADVANTAGE
+ESTIMATION
+
+https://arxiv.org/pdf/1506.02438.pdf
+
+\item
+  Natural gradient
+
+Trust Region Policy Optimization
+
+https://arxiv.org/pdf/1502.05477v5.pdf
+
+\item
+  DQN with improvements
+
+Rainbow: Combining Improvements in Deep Reinforcement Learning
+
+https://arxiv.org/pdf/1710.02298.pdf
+
+\item
+  SAC discrete
+
+SOFT ACTOR-CRITIC FOR DISCRETE ACTION SETTINGS
+
+https://arxiv.org/pdf/1910.07207.pdf
+
+\item
+  approximation of pg theorem for solving off-policy case
+
+Off-Policy Actor-Critic
+
+https://arxiv.org/pdf/1205.4839.pdf
+
+\item
+  a great summary for many pg algorithm
+
+Policy Gradient Algorithms
+
+https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html\#off-policy-policy-gradient
+
+\item
+  detail post about basic RL concept
+A (Long) Peek into Reinforcement Learning
+
+https://lilianweng.github.io/lil-log/2018/02/19/a-long-peek-into-reinforcement-learning.html
+
+\item
+  regularized policy gradient techniques can be interpreted as advantage
+  function learning algorithms
+
+COMBINING POLICY GRADIENT AND Q-LEARNING
+
+https://openreview.net/pdf?id=B1kJ6H9ex
+
+\item
+  greate introduction of RL algorithm and background
+
+Deep Reinforcement Learning
+
+https://julien-vitay.net/deeprl/Introduction.html\#sec:introduction
+
+\item
+  a vivid blog post of natural gradient
+
+RL --- Natural Policy Gradient Explained
+
+https://jonathan-hui.medium.com/rl-natural-policy-gradient-actor-critic-using-kronecker-factored-trust-region-acktr-58f3798a4a93
+
+\item
+  RL framework which is easy to use and have fantastic documentation
+
+https://spinningup.openai.com/en/latest/index.html
+
+\item
+  CS294-112a, basically everything you need to know about Rl
+
+http://rail.eecs.berkeley.edu/deeprlcourse-fa17/
+
+\item
+  if only one course I could recommend, this is the one
+
+UCL Course on RL
+
+https://www.davidsilver.uk/teaching/
+
+\item
+  beat human on all atari games
+
+Agent57: Outperforming the Atari Human Benchmark
+
+https://arxiv.org/pdf/2003.13350.pdf
+
+\item
+  a new approach dealing with exploration problem
+  Rethinking Exploration for Sample-Efficient Policy Learning
+    https://arxiv.org/pdf/2101.09458.pdf
+
+\end{enumerate}
+
+\end{document}
+
