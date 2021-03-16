@@ -71,16 +71,28 @@
 
 \maketitle
 \tableofcontents
-
-% \section*{总体框架}
+\thispagestyle{empty}
 
 \newpage
+\setcounter{page}{1}
+
 
 \begin{figure}
 \centering
 \includegraphics{./images/image-20210228151845844.png}
 % \caption{总体框架}
 \end{figure}
+\vspace{10mm}
+
+\section{ACTOR-CRITIC AND GPI}
+\vspace{10mm}
+
+
+\includegraphics[width=0.32\textwidth]{./images/image-20210301123326314.png}
+\includegraphics[width=0.32\textwidth]{./images/image-20210302162310049.png}
+\includegraphics[width=0.32\textwidth]{./images/image-20210302162529861.png}
+
+\vspace{10mm}
 
 
 \begin{multicols}{3}%number=列数
@@ -137,71 +149,71 @@
 
 \end{multicols}
 
+\newpage
 
 
+% \section{Actor-Critic}
 
-\section{Actor-Critic}
-
-\includegraphics[width=0.32\textwidth]{./images/image-20210301123326314.png}
-\includegraphics[width=0.32\textwidth]{./images/image-20210302162310049.png}
-\includegraphics[width=0.32\textwidth]{./images/image-20210302162529861.png}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  使用什么方式计算critic
-% \end{enumerate}
-
-    \begin{itemize}
-    \item
-      MC
-    \item
-      TD(0)
-    \item
-      TD(n)
-    \item
-      \(\text{TD}(\lambda)\)
-    \end{itemize}
+% \includegraphics[width=0.32\textwidth]{./images/image-20210301123326314.png}
+% \includegraphics[width=0.32\textwidth]{./images/image-20210302162310049.png}
+% \includegraphics[width=0.32\textwidth]{./images/image-20210302162529861.png}
 
 % \begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  使用什么方式计算actor
-% \end{enumerate}
+% \def\labelenumi{\arabic{enumi}.}
+% \item
+%   使用什么方式计算critic
+% % \end{enumerate}
 
-    \begin{itemize}
-    \item
-      Greedy
-    \item
-      Policy gradient
+%     \begin{itemize}
+%     \item
+%       MC
+%     \item
+%       TD(0)
+%     \item
+%       TD(n)
+%     \item
+%       \(\text{TD}(\lambda)\)
+%     \end{itemize}
+
+% % \begin{enumerate}
+% \def\labelenumi{\arabic{enumi}.}
+% \item
+%   使用什么方式计算actor
+% % \end{enumerate}
+
+%     \begin{itemize}
+%     \item
+%       Greedy
+%     \item
+%       Policy gradient
     
-      \begin{itemize}
-      \item
-        on-policy
-      \item
-        off-policy
-      \item
-        natural gradient
-      \end{itemize}
-    \end{itemize}
+%       \begin{itemize}
+%       \item
+%         on-policy
+%       \item
+%         off-policy
+%       \item
+%         natural gradient
+%       \end{itemize}
+%     \end{itemize}
 
-% \begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  Behavior policy 与 target policy 匹配吗
+% % \begin{enumerate}
+% \def\labelenumi{\arabic{enumi}.}
+% \item
+%   Behavior policy 与 target policy 匹配吗
 
 
-    \begin{itemize}
-    \item
-      on-policy
-    \item
-      off-policy
-    \item
-      Importance sampling
-    \item
-      offline
-    \end{itemize}
-\end{enumerate}
+%     \begin{itemize}
+%     \item
+%       on-policy
+%     \item
+%       off-policy
+%     \item
+%       Importance sampling
+%     \item
+%       offline
+%     \end{itemize}
+% \end{enumerate}
 
 
 
@@ -452,12 +464,12 @@ TD算法，和动态规划不同的无非是通过采样进行。
   Off-policy Prediction via Importance Sampling
 \end{enumerate}
 
-\begin{quote}
+
 要区分on-policy和off-policy就首先要区分两类策略，一类是用来生成数据的叫做 behavior policy,这个策略可以是千奇百怪的，甚至是完全随机的，而另一类叫 target policy,
 这是我们心心念念要去学习的策略，而如果这两种策略不是一致的，则变成了off-policy，
 让actor根据别人做的动作去学习，是需要矫正的，这也就是 Importance Sampling 的作用。
 根据另一个分布中的采样数据来估计当前分布的期望。
-\end{quote}
+
 
 \begin{align}
 	\mathsf{E}_{x \sim p(x)}[f(x)] &= \int p(x)f(x) dx
@@ -465,11 +477,11 @@ TD算法，和动态规划不同的无非是通过采样进行。
 	\\ &=\mathsf{E}_{x \sim q(x)}[\frac{p(x)}{q(x)} f(x)] \label{IS}
 \end{align}
 
-\begin{quote}
+
 trajectory的分布也会随着target policy与behavior policy的不同产生差异，
 importance sampling ratio 是一个重要指标，来刻画两个tarjectory分布的比值，
 有助于化简之后的公式，在论文中也经常出现
-\end{quote}
+
 
 
 \begin{align}
@@ -478,22 +490,20 @@ importance sampling ratio 是一个重要指标，来刻画两个tarjectory分�
 	\\ &= \prod^{T-1}_{t=0} \frac{\pi_{target}(a_t|s_t)}{\pi_{behavior}(a_t|s_t)}  \label{pi_frac}
 \end{align}
 
-\begin{quote}
-we wish to estimate the expected returns (values) under the target
-policy, but all we have are returns \(G_t\) due to the behavior policy.
+
 我们应该估计的是使用target policy做采样时的回报期望，但是只有使用behavior policy
 采样后得到的\(G_t\) :
-\end{quote}
+
 
 \begin{equation}
     \mathsf{E}[G_t|s_0 = s_t] = v_b(s_t)
 \end{equation}
 
-\begin{quote}
+
 此时如果想要评估target policy产生的 \(v_\pi(s_t)\) 就需要使用Importance
 Sampling（\(\ref{IS}\)）此时采样的数据分布是由 \(\pi_{behavior}\)
 产生的，而期望评估的是 \(\pi_{target}\) 对应的值函数
-\end{quote}
+
 
 \begin{equation}
     \mathsf{E}[\rho_{t:T-1}G_T|s_0 = s_t] = v_\pi(s_t) \label{IS_V}
@@ -525,10 +535,13 @@ Sampling（\(\ref{IS}\)）此时采样的数据分布是由 \(\pi_{behavior}\)
   Connection between MC
 \end{enumerate}
 
-MC error可以被视为一系列TD error的累加，也就是MC方法在更新价值函数时，相当于考虑了每一步的TD error，而TD(0)只考虑当下的error从而更新价值函数，这就
+
+  MC error可以被视为一系列TD error的累加，也就是MC方法在更新价值函数时，相当于考虑了每一步的TD error，而TD(0)只考虑当下的error从而更新价值函数，这就
 涉及到了credit assignment problem，当获得reward信号后，如何将有关联的值函数更新，例如考试没通过，到底是和昨晚上通宵复习临阵磨枪相关呢，还是和平时划水
 相关呢，TD(0)只会更新当下的值函数，v(通宵学习) = -100 + v(考试结束) 显然有些荒谬，换言之TD(0)对信息的传播是缓慢的，拿到reward信号后，当下的state的值函数
 可以得到更新，但是更早的状态却没有更新。下图是一个MDP过程，从左上角出发，agent做随机动作直到右下角可以得到reward，可以看出各个不同方法的区别。
+
+
 
 \begin{figure}
   \centering
@@ -627,7 +640,8 @@ MC error可以被视为一系列TD error的累加，也就是MC方法在更新�
 \caption{Eligibility Traces}
 \end{figure}
 
-从公式（\ref{TD_lambda}）可以看出$TD(\lambda$与MC，TD的联系，当$\lambda = 1$时
+
+  从公式（\ref{TD_lambda}）可以看出$TD(\lambda$与MC，TD的联系，当$\lambda = 1$时
 $G_t^{\lambda}$退化为$G_t$也就是蒙特卡洛，而当$\lambda = 0$时$G_t^{\lambda} = G_{t:t+1}$
 也就是$TD(0)$ 一方面是无偏估计但是高方差，一方面是较低的方差但是估计有偏，
 所谓的 bias-variance balance problem 会经常出现， 强化学习中有三对很重要的
@@ -641,6 +655,8 @@ $TD(\lambda)$相当于对不同步长进行了加权，这就使得更新只能�
 简而言之维持了一个  eligibility traces weight 和一个 long term weight 将梯度不断的累加到
 eligibility traces weight中但同时以\(\gamma \lambda\)的速率衰减，正如人会逐步遗忘过去的经验，
 更新$v_{\omega}(s)$时则同时考虑两者。
+
+
 
 \begin{equation}
 \begin{array}{l}
@@ -923,8 +939,6 @@ behavior-policy \(\pi_b\) 后state的分布:
 
 \subsubsection{Entropy regularized framework}
 
-
-% \paragraph{basic idea}
 为方便参考，给出熵与KL的计算公式如下：
 \begin{align}
     H(\pi(a|s)) &= \textsf{E}_{a \sim \pi(a|s)}[-\log(\pi(a|s))]\\
@@ -967,11 +981,10 @@ behavior-policy \(\pi_b\) 后state的分布:
   V_{\pi}(s)=\mathbb{E}_{a \sim \pi}\left[Q_{\pi}(s, a)\right]-\tau \mathrm{KL}(s)  
 \end{equation}
 
-\hypertarget{header-n304}{%
-\paragraph{Continuous action spaces}\label{header-n304}}
 
-\hypertarget{header-n305}{%
-\subparagraph{}{Policy Function}\label{header-n305}}
+\paragraph{Continuous action spaces}
+
+\subparagraph{Policy Function}
 \begin{equation}
     \pi^{*}=\arg \max _{\pi} \sum_{t} \mathbb{E}_{\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right) \sim \rho_{\pi}}\left[r\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)+\alpha \mathcal{H}\left(\pi\left(\cdot \mid \mathbf{s}_{t}\right)\right)\right]
 \end{equation}
@@ -1010,9 +1023,7 @@ behavior-policy \(\pi_b\) 后state的分布:
 \end{equation}
 
 
-
-\hypertarget{header-n315}{%
-\paragraph{Discrete action spaces}\label{header-n315}}
+\paragraph{Discrete action spaces}
 \begin{equation}
   V\left(s_{t}\right):=\pi\left(s_{t}\right)^{T}\left[Q\left(s_{t}\right)-\alpha \log \pi\left(s_{t}\right)\right]  
 \end{equation}
