@@ -687,7 +687,7 @@ GAE 与 \(TD(\lambda)\) 的关系是清晰的，GAE就是
 gradient策略无非是使用了更为复杂的actor
 
 \hypertarget{header-n16852}{%
-\paragraph{Greedy}\label{header-n16852}}
+\subsubsection{Greedy}\label{header-n16852}}
 
 \begin{align}
   \pi(a|s)&=\underset{a \in \mathcal{A}}{\operatorname{argmax}} \{r(s,a)+\mathcal{P}(s'|s, a)V\left(s^{\prime}\right)\} \\
@@ -828,7 +828,7 @@ target policy 和 behavior policy 需要是一致的，也就是 on-policy
 \end{align}
 
 \hypertarget{header-n16886}{%
-\paragraph{Policy-gradient off-policy}\label{header-n16886}}
+\subsubsection{Policy-gradient off-policy}\label{header-n16886}}
 
 从最抽象的层次说，此问题相当于要使用 behavior policy 生成的样本序列
 \(\tau \sim \pi_{\theta ^ b}\) 去对 target policy 的优化目标
@@ -891,7 +891,7 @@ behavior-policy \(\pi_b\) 后state的分布:
 \subsubsection{Entropy regularized framework}\label{header-n289}}
 
 \hypertarget{header-n291}{%
-\subsubsection{basic idea}\label{header-n291}}
+\paragraph{basic idea}\label{header-n291}}
 为方便参考，给出熵与KL的计算公式如下：
 \begin{align}
     H(\pi(a|s)) &= \textsf{E}_{a \sim \pi(a|s)}[-\log(\pi(a|s))]\\
@@ -935,10 +935,10 @@ behavior-policy \(\pi_b\) 后state的分布:
 \end{equation}
 
 \hypertarget{header-n304}{%
-\subsubsection{Continuous action spaces}\label{header-n304}}
+\paragraph{Continuous action spaces}\label{header-n304}}
 
 \hypertarget{header-n305}{%
-\paragraph{Policy Function}\label{header-n305}}
+\subparagraph{}{Policy Function}\label{header-n305}}
 \begin{equation}
     \pi^{*}=\arg \max _{\pi} \sum_{t} \mathbb{E}_{\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right) \sim \rho_{\pi}}\left[r\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)+\alpha \mathcal{H}\left(\pi\left(\cdot \mid \mathbf{s}_{t}\right)\right)\right]
 \end{equation}
@@ -959,7 +959,7 @@ behavior-policy \(\pi_b\) 后state的分布:
 
 
 \hypertarget{header-n308}{%
-\paragraph{Value Function}\label{header-n308}}
+\subparagraph{Value Function}\label{header-n308}}
 \begin{equation}
   V\left(\mathbf{s}_{t}\right)=\mathbb{E}_{\mathbf{a}_{t} \sim \pi}\left[Q\left(\mathbf{s}_{t}, \mathbf{a}_{t}\right)-\alpha \log \pi\left(\mathbf{a}_{t} \mid \mathbf{s}_{t}\right)\right]  
 \end{equation}
@@ -979,7 +979,7 @@ behavior-policy \(\pi_b\) 后state的分布:
 
 
 \hypertarget{header-n315}{%
-\subsubsection{Discrete action spaces}\label{header-n315}}
+\paragraph{Discrete action spaces}\label{header-n315}}
 \begin{equation}
   V\left(s_{t}\right):=\pi\left(s_{t}\right)^{T}\left[Q\left(s_{t}\right)-\alpha \log \pi\left(s_{t}\right)\right]  
 \end{equation}
