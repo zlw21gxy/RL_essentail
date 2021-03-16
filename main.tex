@@ -15,6 +15,7 @@
 \usepackage{ifxetex,ifluatex}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{multicol}
 
 \usepackage{geometry}
 \geometry{
@@ -27,31 +28,7 @@
  }
 
  
- 
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math}
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-% Use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
-% \makeatletter
-% \@ifundefined{KOMAClassName}{% if non-KOMA class
-%   \IfFileExists{parskip.sty}{%
-%     \usepackage{parskip}
-%   }{% else
-%     \setlength{\parindent}{0pt}
-%     \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-% }{% if KOMA class
-%   \KOMAoptions{parskip=half}}
+
 \makeatother
 \usepackage{xcolor}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
@@ -60,10 +37,12 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
+
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+
 \makeatother
 % Scale images if necessary, so that they will not overflow the page
 % margins by default, and it is still possible to overwrite the defaults
@@ -76,31 +55,92 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 \ifluatex
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{3}
 
 \author{谷心洋}
 \date{20210312}
 
 \begin{document}
 
-\hypertarget{header-n16663}{%
-\section{RL Essential}\label{header-n16663}}
+\title{RL Essential}
 
-\hypertarget{header-n16665}{%
-\subsection{总体框架}\label{header-n16665}}
+\maketitle
+\tableofcontents
+
+% \section*{总体框架}
+
+\newpage
 
 \begin{figure}
 \centering
 \includegraphics{./images/image-20210228151845844.png}
-\caption{}
+% \caption{总体框架}
 \end{figure}
 
-\hypertarget{header-n16667}{%
-\subsubsection{Actor-Critic}\label{header-n16667}}
+
+\begin{multicols}{3}%number=列数
+  % [\section{标题}显示在分栏上方的文字，这一部分是可选的]
+  % 正文：需要分栏的部分，这一部分可以添加任何latex命令，除了不允许的浮动以外...
+  \begin{enumerate}
+    \def\labelenumi{\arabic{enumi}.}
+    \item
+      使用什么方式计算critic
+        \begin{itemize}
+        \item
+          MC
+        \item
+          TD(0)
+        \item
+          TD(n)
+        \item
+          \(\text{TD}(\lambda)\)
+        \end{itemize}
+        \bigskip
+
+    \def\labelenumi{\arabic{enumi}.}
+    \item
+      使用什么方式计算actor
+        \begin{itemize}
+        \item
+          Greedy
+        \item
+          Policy gradient
+          \begin{itemize}
+          \item
+            on-policy
+          \item
+            off-policy
+          \item
+            natural gradient
+          \end{itemize}
+        \end{itemize}
+    
+    \def\labelenumi{\arabic{enumi}.}
+    \item
+      Behavior policy 与 target policy 匹配吗
+        \begin{itemize}
+        \item
+          on-policy
+        \item
+          off-policy
+        \item
+          Importance sampling
+        \item
+          offline
+        \end{itemize}
+    \end{enumerate}
+
+\end{multicols}
+
+
+
+
+\section{Actor-Critic}
 
 \includegraphics[width=0.32\textwidth]{./images/image-20210301123326314.png}
 \includegraphics[width=0.32\textwidth]{./images/image-20210302162310049.png}
@@ -164,11 +204,10 @@
 \end{enumerate}
 
 
-\hypertarget{header-n16711}{%
-\subsection{基本概念}\label{header-n16711}}
 
-\hypertarget{header-n16712}{%
-\subsubsection{Defination}\label{header-n16712}}
+\section{基本概念}
+
+\subsection{Defination}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -212,8 +251,8 @@
     \pi^* = \arg \max_{\pi} J(\pi)
 \end{equation}
 
-\hypertarget{header-n16728}{%
-\subsubsection{Value Function}\label{header-n16728}}
+
+\subsubsection{Value Function}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -231,23 +270,21 @@
 \item
   one-step expand for value function
 
-
 \begin{figure}
 \centering
   \begin{subfigure}[b]{0.7\textwidth}
     \centering
     \includegraphics[width=\textwidth]{./images/image-20210228162805882.png}
     \caption{$V(s)$单步展开}
-    \label{fig:f1}
+
   \end{subfigure}
   \newline
   \begin{subfigure}[b]{0.7\textwidth}
     \centering
     \includegraphics[width=\textwidth]{./images/image-20210228162818519.png}
     \caption{$Q(s, a)$单步展开}
-    \label{fig:f2}
-  \end{subfigure}
 
+  \end{subfigure}
 \end{figure}
 
 \begin{equation}
@@ -291,8 +328,8 @@ Q^{\pi}(s, a) = r(s, a) + \gamma E_{s' \sim P}[V^{\pi}(s')]  \label{QV}
 
 
 
-\hypertarget{header-n16750}{%
-\subsubsection{Optimal Value Function}\label{header-n16750}}
+
+\subsubsection{Optimal Value Function}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -352,8 +389,8 @@ Q^*(s,a) = \max_{\pi} Q_{\pi}(s, a) = \max_{\pi} E_{\tau \sim \pi}[{R(\tau)\left
 \begin{equation}
     Q^*(s,a) = E_{s'\sim P}[{r(s,a) + \gamma \max_{a'} Q^*(s',a')}]  \label{opt_q}
 \end{equation}
-\hypertarget{header-n16769}{%
-\subsubsection{Advantage}\label{header-n16769}}
+
+\subsubsection{Advantage}
 
 Advantage在 policy gradient
 的算法中经常使用，此处给出定义，直觉上该值表征了在状态 \(s_t\)
@@ -383,8 +420,8 @@ advantage的无偏估计}
 
 
 
-\hypertarget{header-n16777}{%
-\subsection{Implementing a critic}\label{header-n16777}}     % predict
+
+\subsection{Implementing a critic}
 
 对一个未知的MDP过程，策略已知的情况下如何评价策略的优劣就是critic要解决的问题，从最朴素的
 逻辑看来，就是将该策略在环境中跑上很多次，甚至无限次，将其总收益的均值作为真实回报的估计值，
@@ -397,8 +434,8 @@ advantage的无偏估计}
 TD算法，和动态规划不同的无非是通过采样进行。
 
 
-\hypertarget{header-n16779}{%
-\subsubsection{Monte-Carlo}\label{header-n16779}}
+
+\subsubsection{Monte-Carlo}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -462,11 +499,10 @@ Sampling（\(\ref{IS}\)）此时采样的数据分布是由 \(\pi_{behavior}\)
     \mathsf{E}[\rho_{t:T-1}G_T|s_0 = s_t] = v_\pi(s_t) \label{IS_V}
 \end{equation}
 
-\hypertarget{header-n16802}{%
-\subsubsection{Temporal-Difference}\label{header-n16802}}
 
-\hypertarget{header-n16803}{%
-\paragraph{TD(0)}\label{header-n16803}}
+\subsubsection{Temporal-Difference}
+
+\paragraph{TD(0)}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -511,9 +547,7 @@ MC error可以被视为一系列TD error的累加，也就是MC方法在更新�
 \end{align}
 
 
-
-\hypertarget{header-n16812}{%
-\paragraph{TD(n)}\label{header-n16812}}
+\paragraph{TD(n)}
 
 
 \begin{figure}
@@ -551,8 +585,8 @@ MC error可以被视为一系列TD error的累加，也就是MC方法在更新�
     \delta = G_{t:t+n} - V(s_t)
 \end{equation}
 
-\hypertarget{header-n16823}{%
-\paragraph{\texorpdfstring{\(\mathsf{TD}(\lambda)\)}{\textbackslash mathsf\{TD\}(\textbackslash lambda)}}\label{header-n16823}}
+
+\paragraph{\texorpdfstring{\(\mathsf{TD}(\lambda)\)}{\textbackslash mathsf\{TD\}(\textbackslash lambda)}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -679,15 +713,15 @@ GAE 与 \(TD(\lambda)\) 的关系是清晰的，GAE就是
 \\&=\delta_{V}^{\lambda}\left(s_{t}, s_{t+1} ; \omega\right)
 \end{align}
 
-\hypertarget{header-n16845}{%
-\subsection{Implementing a actor}\label{header-n16845}}
+
+\subsection{Implementing a actor}
 
 
 策略提升无非有两种方式，一种是根据现有的值函数贪婪的选择动作，另一种是直接对强化学习的优化目标进行策略提升，但其实几乎所有工程实践中使用的方式都可以放入actor-critic的框架，greedy策略可以视为一种特殊的actor，而policy
 gradient策略无非是使用了更为复杂的actor
 
-\hypertarget{header-n16852}{%
-\subsubsection{Greedy}\label{header-n16852}}
+
+\subsubsection{Greedy}
 
 \begin{align}
   \pi(a|s)&=\underset{a \in \mathcal{A}}{\operatorname{argmax}} \{r(s,a)+\mathcal{P}(s'|s, a)V\left(s^{\prime}\right)\} \\
@@ -734,8 +768,8 @@ bellam equation (\(\ref{opt_q}\))
 $\epsilon-greedy$策略随机的选择动作但这也意味着对于好的动作和差的动作，被选择的概率都相同，一种改进是对不同动作
 赋予不同的概率，再从这个分布中进行采样。$\tau$是控制动作离散程度的超参数，物理含义是温度，$\tau$越大则越接近于均匀分布，
 反之则接近于值函数的分布，当 $\tau \rightarrow 0$ 时，退化为greedy策略。
-\hypertarget{header-n16862}{%
-\paragraph{Policy-gradient on-policy}\label{header-n16862}}
+
+\subsubsection{Policy-gradient on-policy}
 另一种思路是用一种策略去直接的最大化回报，而非隐式的从值函数中还原出策略，回忆强化学习的根本问题，最大化累计回报，以此作为优化目标
 直接的更新策略：
 \begin{align}  
@@ -827,8 +861,7 @@ target policy 和 behavior policy 需要是一致的，也就是 on-policy
 	\\&=\mathsf{E}_{\pi_{\theta}}\left[\delta_{t} e_{t}\right]  &\text{TD}(\lambda)\text{Actor-Critic}
 \end{align}
 
-\hypertarget{header-n16886}{%
-\subsubsection{Policy-gradient off-policy}\label{header-n16886}}
+\subsubsection{Policy-gradient off-policy}
 
 从最抽象的层次说，此问题相当于要使用 behavior policy 生成的样本序列
 \(\tau \sim \pi_{\theta ^ b}\) 去对 target policy 的优化目标
@@ -887,11 +920,11 @@ behavior-policy \(\pi_b\) 后state的分布:
 \end{equation}
 
 
-\hypertarget{header-n289}{%
-\subsubsection{Entropy regularized framework}\label{header-n289}}
 
-\hypertarget{header-n291}{%
-\paragraph{basic idea}\label{header-n291}}
+\subsubsection{Entropy regularized framework}
+
+
+% \paragraph{basic idea}
 为方便参考，给出熵与KL的计算公式如下：
 \begin{align}
     H(\pi(a|s)) &= \textsf{E}_{a \sim \pi(a|s)}[-\log(\pi(a|s))]\\
@@ -1002,8 +1035,8 @@ Q^{\pi}(s, a) &=\underset{s^{\prime} \sim P \atop a^{\prime} \sim \pi}{\mathrm{E
 \end{align}
 
 \newpage
-\hypertarget{header-n16943}{%
-\section{Reference}\label{header-n16943}}
+
+\section{Reference}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
